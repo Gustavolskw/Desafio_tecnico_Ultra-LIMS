@@ -11,7 +11,7 @@ const props = defineProps({
 const emits = defineEmits(['sort']) // Define event emitter
 
 function sortBy(key) {
-  if (!['bairro', 'localidade', 'estado'].includes(key)) {
+  if (!['id', 'bairro', 'localidade', 'estado'].includes(key)) {
     return
   }
 
@@ -28,7 +28,10 @@ function capitalize(str) {
   <table v-if="props.data.length">
     <thead>
       <tr>
-        <th>ID</th>
+        <th @click.prevent="sortBy('id')" :class="{ active: sortKey === 'id' }">
+          ID
+          <span class="arrow" :class="{ asc: sortOrders.id > 0, dsc: sortOrders.id < 0 }"></span>
+        </th>
         <th>CEP</th>
         <th>{{ capitalize('Logradouro') }}</th>
         <th>{{ capitalize('Complemento') }}</th>
@@ -133,11 +136,5 @@ th.active .arrow {
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
   border-top: 4px solid #fff;
-}
-
-@media (max-width: 1200px) {
-  table {
-    display: none;
-  }
 }
 </style>
