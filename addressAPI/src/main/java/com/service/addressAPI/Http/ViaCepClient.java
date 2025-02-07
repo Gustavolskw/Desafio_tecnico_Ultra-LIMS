@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public interface ViaCepClient {
 
     @RequestMapping(method = RequestMethod.GET, value = "/{cep}/json")
-    CepViaCepRequestDTO buscaDadosDoCep(@PathVariable Long cep);
+    CepViaCepRequestDTO buscaDadosDoCep(@PathVariable String cep);
 }

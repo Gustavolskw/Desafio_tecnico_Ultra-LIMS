@@ -28,7 +28,7 @@ public class CepService {
     public String registerAddress(CepRequestDTO cepRequestDTO){
         cepValidation.isValidCep(cepRequestDTO.cep());
         cepValidation.isAlreadySaved(cepRequestDTO.cep());
-        CepViaCepRequestDTO cep = requestViaCep(cepRequestDTO.cep());
+        CepViaCepRequestDTO cep = requestViaCep(cepRequestDTO.cep().toString());
         Cep newCep = buildAddress(cep);
         cepRepository.save(newCep);
         return newCep.getCep();
@@ -56,13 +56,29 @@ public class CepService {
         return cepList;
     }
 
+    public Cep getAddress(String cepSearched) {
+        Cep cep = cepRepository.findByCep(cepSearched).orElse(null);
+        if (cep == null) {
+            CepViaCepRequestDTO cepViaCepRequestDTO = requestViaCep(cepSearched);
+            cep = buildAddress(cepViaCepRequestDTO);
+            return cep;
+        }
+        return cep;
+    }
+
+
+
+
+
+
+
 
     public Boolean isRegistered (Long cep){
         return cepRepository.findById(cep).isPresent();
     }
 
 
-    private  CepViaCepRequestDTO requestViaCep(Long cep){
+    private  CepViaCepRequestDTO requestViaCep(String cep){
         CepViaCepRequestDTO response = viaCepClient.buscaDadosDoCep(cep);
         if (response == null || response.getCep() == null || response.getCep().isEmpty()) {
             throw new InvalidCepException("Não foi possível encontrar um endereço para o CEP informado.");

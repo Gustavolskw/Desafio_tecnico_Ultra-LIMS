@@ -38,4 +38,10 @@ public class CepController {
         return ResponseEntity.ok().body(new ApiResponse("Lista de Registros de CEP", new PageableResponse<>(cepResponseDTO)));
     }
 
+
+    @GetMapping("/{cep}")
+    public ResponseEntity<ApiResponse> buscarCep(@PathVariable("cep") String cep){
+        return ResponseEntity.ok().body(new ApiResponse("CEP Encontrado!", cepService.getAddress(cep)));
+    }
+
 }
