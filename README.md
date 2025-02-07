@@ -84,7 +84,7 @@ services:
 CREATE DATABASE IF NOT EXISTS API_CEP;
 ```
 
-#### 4️⃣ Alterar parametros de conexao com o banco de dados no backend 
+#### 3️⃣ Alterar parametros de conexao com o banco de dados no backend 
 ```application.properties
 spring.application.name=addressAPI
 spring.datasource.url=jdbc:mysql://***********:330*/API_CEP ---- endereço do banco de dados  e porta do banco de dados 
@@ -116,6 +116,91 @@ cd AddressFront
 npm install
 npm run dev
 ```
+
+
+# 📌 Desafio 2: Implementação e Comparação de Algoritmos de Ordenação
+
+## 📄 Estrutura do Código
+
+O código está dividido em quatro partes principais:
+
+### 1️⃣ Implementação dos Algoritmos de Ordenação
+Foram implementados três algoritmos clássicos de ordenação:
+
+- **QuickSort** → Utiliza o conceito de divisão e conquista para ordenar os elementos.
+- **MergeSort** → Divide recursivamente a lista ao meio e depois mescla as partes ordenadas.
+- **BubbleSort** → Percorre a lista repetidamente, trocando elementos adjacentes fora de ordem.
+
+---
+
+### 2️⃣ Geração de Listas de Teste
+Foram geradas diferentes listas para avaliar a eficiência dos algoritmos em diversos cenários:
+
+- **Lista Ordenada** → Representa o melhor caso para alguns algoritmos.
+- **Lista Reversamente Ordenada** → Simula o pior caso de ordenação.
+- **Lista Pequena** → Contém entre **10 e 100 elementos**.
+- **Lista Média** → Contém entre **1.000 e 10.000 elementos**.
+- **Lista Grande** → Contém **100.000 elementos ou mais**.
+- **Lista com Muitos Duplicados** → Testa o impacto de valores repetidos na ordenação.
+
+---
+
+### 3️⃣ Execução e Medição de Tempo
+Cada algoritmo foi executado e seu **tempo de execução medido em nanossegundos**, convertendo os resultados para **milissegundos (ms)** para facilitar a comparação.
+
+A medição foi feita utilizando a função:
+```java
+long startTime = System.nanoTime();
+sortFunction.sort(arr);
+long endTime = System.nanoTime();
+System.out.printf("%s: %.6f ms%n", name, (endTime - startTime) / 1e6);
+```
+
+
+####Execução
+
+```bash
+ cd Desafio2/
+javac *.java
+java SortingTest
+```
+
+####Saida
+
+```java
+--- Teste com Lista Pequena ---
+QuickSort: 0.219939 ms
+MergeSort: 0.013305 ms
+BubbleSort: 0.006301 ms
+
+--- Teste com Lista Média ---
+QuickSort: 0.522994 ms
+MergeSort: 0.709171 ms
+BubbleSort: 4.088623 ms
+
+--- Teste com Lista Grande ---
+QuickSort: 9.359748 ms
+MergeSort: 13.604571 ms
+BubbleSort: 9218.686175 ms
+
+--- Teste com Lista Ordenada ---
+QuickSort: 0.480295 ms
+MergeSort: 0.061054 ms
+BubbleSort: 0.000932 ms
+
+--- Teste com Lista Reversamente Ordenada ---
+QuickSort: 0.339231 ms
+MergeSort: 0.053770 ms
+BubbleSort: 0.238474 ms
+
+--- Teste com Lista com Muitos Duplicados ---
+QuickSort: 0.042069 ms
+MergeSort: 0.070541 ms
+BubbleSort: 1.935815 ms
+
+```
+
+
 
 
 ###$📄 Licença
