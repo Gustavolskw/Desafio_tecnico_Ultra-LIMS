@@ -1,6 +1,6 @@
 <template>
-  <section class="d-flex justify-content-center gap-3">
-    <div class="row align-items-center justify-content-center gap-5">
+  <section class="d-flex justify-content-center flex-wrap">
+    <div class="row align-items-center justify-content-center">
       <div class="col-md-12 col-lg-12 mb-3">
         <div class="input-group">
           <span class="input-group-text" id="inputGroup2">
@@ -19,17 +19,17 @@
       </div>
     </div>
     <div>
-      <button @click.prevent="handleSearchByCep" class="btn fs-4 text-primary mb-3">
+      <button @click.prevent="handleSearchByCep" class="btn fs-2 text-primary mb-3">
         <i class="bi bi-compass"></i>
       </button>
     </div>
 
-    <div class="ms-5">
+    <div class="d-flex button-add-address">
       <button
         @click.prevent="handleModalFormOpen"
         class="btn fs-4 mb-3 btn-outline-success fw-bold"
       >
-        Adicionar Endereço<i class="bi bi-house-add ps-3"></i>
+        Adicionar Endereço<i class="bi bi-house-add fs-3"></i>
       </button>
     </div>
   </section>
@@ -48,3 +48,21 @@ function handleSearchByCep() {
   emits('cepSearched', { cep: cepSearch.value })
 }
 </script>
+
+<style scoped>
+section {
+  gap: 2rem;
+}
+.button-add-address {
+  margin-left: 5rem;
+}
+
+@media (max-width: 600px) {
+  section {
+    gap: 0rem;
+  }
+  .button-add-address {
+    margin-left: 0;
+  }
+}
+</style>
