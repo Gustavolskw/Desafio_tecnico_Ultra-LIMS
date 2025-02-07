@@ -1,5 +1,7 @@
 <script setup>
 import AddressesGrid from '@/components/Grids/AddressesGrid.vue'
+import AddCepModal from '@/components/Modals/AddCepModal.vue'
+import AlertModal from '@/components/Alerts/AlertModal.vue'
 import NavBar from '@/components/Navs/NavBar.vue'
 import axiosClient from '@/client/axiosClient'
 import { onMounted, ref, reactive } from 'vue'
@@ -8,6 +10,12 @@ const loading = ref(false)
 const error = ref(false)
 const cepSearch = ref()
 const addresses = ref([])
+
+const addCepModalShow = ref(false)
+
+const alertModal = ref(false)
+const alertMessageStatus = ref()
+const alertMessage = ref()
 
 const sortingState = reactive({
   sortField: null,
@@ -69,6 +77,37 @@ async function getAddresses() {
     loading.value = false
   }
 }
+
+async function insertAddressOnAPI(data) {
+  loading.value = true
+  error.value = false
+
+  try {
+    const response = await axiosClient.post('/cep', data, {
+      timeout: 5000,
+    })
+
+    if (response.data?.data) {
+      alertMessage.value = response.data.message
+      alertMessageStatus.value = response.status
+    } else {
+      alertMessage.value = response.data.message
+      alertMessageStatus.value = response.status
+    }
+  } catch (err) {
+    console.error('Erro ao Inserir Registros de CEP:', err)
+    error.value = true
+    alertMessage.value = err.response.data.message
+    alertMessageStatus.value = err.response.status
+  } finally {
+    alertModal.value = true
+    getAddresses()
+  }
+}
+
+function handleCepInsert(data) {
+  insertAddressOnAPI(data)
+}
 </script>
 
 <template>
@@ -76,7 +115,7 @@ async function getAddresses() {
     <h2 class="text-center py-5 fw-bold">BuscaCEP <i class="bi bi-house-up"></i></h2>
   </section>
 
-  <NavBar @cepSearched="handleCepSearch"></NavBar>
+  <NavBar @cepSearched="handleCepSearch" @openAddCepModal="addCepModalShow = true"></NavBar>
 
   <section class="d-flex justify-content-center">
     <div v-if="!loading && !error" class="grid-container my-5">
@@ -106,6 +145,25 @@ async function getAddresses() {
     <p v-else-if="loading">Carregando Registros...</p>
     <p v-else class="text-danger">Erro ao carregar Registros de CEP:</p>
   </section>
+
+  <Teleport to="body">
+    <AddCepModal
+      :show="addCepModalShow"
+      @close="addCepModalShow = false"
+      @cepInsert="handleCepInsert"
+    >
+    </AddCepModal>
+  </Teleport>
+
+  <Teleport to="body">
+    <AlertModal
+      @close="alertModal = false"
+      :alertShow="alertModal"
+      :message="alertMessage"
+      :status="alertMessageStatus"
+    >
+    </AlertModal>
+  </Teleport>
 </template>
 
 <style scoped>
