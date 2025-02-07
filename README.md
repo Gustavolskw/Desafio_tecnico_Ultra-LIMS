@@ -165,9 +165,9 @@ javac *.java
 java SortingTest
 ```
 
-####Saida
+#### Saida
 
-```java
+```bash
 --- Teste com Lista Pequena ---
 QuickSort: 0.219939 ms
 MergeSort: 0.013305 ms
