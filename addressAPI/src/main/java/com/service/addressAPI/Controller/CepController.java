@@ -4,6 +4,7 @@ import com.service.addressAPI.Domain.Model.Cep;
 import com.service.addressAPI.Domain.Request.CepRequestDTO;
 import com.service.addressAPI.Domain.Response.ApiResponse;
 import com.service.addressAPI.Domain.Response.CepResponseDTO;
+import com.service.addressAPI.Domain.Response.CepSearchedResponseDTO;
 import com.service.addressAPI.Domain.Response.PageableResponse;
 import com.service.addressAPI.Service.CepService;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,7 @@ public class CepController {
 
     @GetMapping("/{cep}")
     public ResponseEntity<ApiResponse> buscarCep(@PathVariable("cep") String cep){
-        return ResponseEntity.ok().body(new ApiResponse("CEP Encontrado!", cepService.getAddress(cep)));
+        return ResponseEntity.ok().body(new ApiResponse("CEP Encontrado!", new CepSearchedResponseDTO(cepService.getAddress(cep))));
     }
 
 }

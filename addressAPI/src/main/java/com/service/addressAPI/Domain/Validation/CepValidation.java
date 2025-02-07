@@ -12,21 +12,19 @@ public class CepValidation {
 
     private final CepRepository cepRepository;
 
-        public void isValidCep(Long cep) {
-            if (cep == null) {
+        public void isValidCep(String cep) {
+            if (cep.isEmpty()) {
                throw new InvalidCepException("Valor do Cep Vazio!");
             }
 
-            String cepStr = String.format("%08d", cep);
-
-            if(!cepStr.matches("\\d{8}")){
+            if(!cep.matches("\\d{8}")){
                 throw new InvalidCepException("Quantidade de caracteres inválidos!");
             }
         }
 
 
-    public void isAlreadySaved(Long cep) {
-        if(cepRepository.existsByCep(cep.toString())){
+    public void isAlreadySaved(String cep) {
+        if(cepRepository.existsByCep(cep)){
             throw new AlreadyRegisteredCepException("Cep enviado já esta registrado no banco de dados!");
         }
     }

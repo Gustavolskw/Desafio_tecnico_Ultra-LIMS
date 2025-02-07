@@ -26,10 +26,8 @@ public class CepService {
     private final ViaCepClient viaCepClient;
 
     public String registerAddress(CepRequestDTO cepRequestDTO){
-        cepValidation.isValidCep(cepRequestDTO.cep());
         cepValidation.isAlreadySaved(cepRequestDTO.cep());
-        CepViaCepRequestDTO cep = requestViaCep(cepRequestDTO.cep().toString());
-        Cep newCep = buildAddress(cep);
+        Cep newCep = buildAddressToInsert(cepRequestDTO);
         cepRepository.save(newCep);
         return newCep.getCep();
     }
@@ -57,21 +55,15 @@ public class CepService {
     }
 
     public Cep getAddress(String cepSearched) {
+        cepValidation.isValidCep(cepSearched);
         Cep cep = cepRepository.findByCep(cepSearched).orElse(null);
         if (cep == null) {
             CepViaCepRequestDTO cepViaCepRequestDTO = requestViaCep(cepSearched);
-            cep = buildAddress(cepViaCepRequestDTO);
+            cep = buildAddressShow(cepViaCepRequestDTO);
             return cep;
         }
         return cep;
     }
-
-
-
-
-
-
-
 
     public Boolean isRegistered (Long cep){
         return cepRepository.findById(cep).isPresent();
@@ -88,7 +80,7 @@ public class CepService {
 
     }
 
-    private  Cep buildAddress(CepViaCepRequestDTO response) {
+    private  Cep buildAddressShow(CepViaCepRequestDTO response) {
         Cep novoCep = new Cep();
         novoCep.setCep(response.getCep());
         novoCep.setLogradouro(response.getLogradouro());
@@ -103,6 +95,24 @@ public class CepService {
         novoCep.setGia(response.getGia());
         novoCep.setDdd(response.getDdd());
         novoCep.setSiafi(response.getSiafi());
+        return novoCep;
+    }
+
+    private  Cep buildAddressToInsert(CepRequestDTO response) {
+        Cep novoCep = new Cep();
+        novoCep.setCep(response.cep());
+        novoCep.setLogradouro(response.logradouro());
+        novoCep.setComplemento(response.complemento());
+        novoCep.setUnidade(response.unidade());
+        novoCep.setBairro(response.bairro());
+        novoCep.setLocalidade(response.localidade());
+        novoCep.setUf(response.uf());
+        novoCep.setEstado(response.estado());
+        novoCep.setRegiao(response.regiao());
+        novoCep.setIbge(response.ibge());
+        novoCep.setGia(response.gia());
+        novoCep.setDdd(response.ddd());
+        novoCep.setSiafi(response.siafi());
         return novoCep;
     }
 
