@@ -48,6 +48,10 @@ O sistema possibilita que o usuário:
 #### 1️⃣ Clonar o repositório  
 ```bash
 git clone https://github.com/Gustavolskw/Desafio_tecnico_Ultra-LIMS.git 
+cd Desafio_tecnico_Ultra-LIMS
+```
+Ou
+```bash
 git clone git@github.com:Gustavolskw/Desafio_tecnico_Ultra-LIMS.git
 cd Desafio_tecnico_Ultra-LIMS
 ```
