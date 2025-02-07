@@ -50,3 +50,75 @@ O sistema possibilita que o usuário:
 git clone https://github.com/Gustavolskw/Desafio_tecnico_Ultra-LIMS.git 
 git clone git@github.com:Gustavolskw/Desafio_tecnico_Ultra-LIMS.git
 cd Desafio_tecnico_Ultra-LIMS
+```
+
+#### 2️⃣ Instalar/Configurar um Banco de dados Mysql
+- Instalar MySQL 8+
+- Criar um Schema com nome API_CEP
+
+
+### 2️⃣ Configurar um Docker de um Banco de dados Mysql
+```docker
+version: "4"
+
+services:
+  mysql-cep:
+    image: mysql:8.3.0
+    container_name: address-database
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-mysql} 
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql 
+```
+
+##OBS
+- Criar um pasta na raiz do projeto(junto ao docker-compose.yml) com o nome de docker
+- Dentro da pasta docker criar uma subpasta chamada mysql
+- dentro dessa subpasta criar um arquivo com o nome de init.sql
+
+#init.sql
+```sql
+CREATE DATABASE IF NOT EXISTS API_CEP;
+```
+
+#### 4️⃣ Alterar parametros de conexao com o banco de dados no backend 
+```application.properties
+spring.application.name=addressAPI
+spring.datasource.url=jdbc:mysql://***********:330*/API_CEP ---- endereço do banco de dados  e porta do banco de dados 
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.username=***** --- usuario do banco de dados 
+spring.datasource.password=***** --- senha do banco de dados
+```
+
+##Caso utilizar o docker passado
+
+```application.properties
+spring.datasource.url=jdbc:mysql://localhost:3307/API_CEP
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.username=root
+spring.datasource.password=mysql
+api.prefix=/api/v1
+```
+
+#### 4️⃣ Executar o backend 
+```bash
+cd addressAPI
+./mvnw spring-boot:run
+```
+
+
+#### 5️⃣ Executar o frontend
+```bash
+cd AddressFront
+npm install
+npm run dev
+```
+
+
+###$📄 Licença
+Este projeto é de uso livre para fins educacionais e profissionais.
+
+
