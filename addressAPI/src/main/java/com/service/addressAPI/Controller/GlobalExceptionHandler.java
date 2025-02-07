@@ -4,13 +4,16 @@ import com.service.addressAPI.Domain.Exception.AlreadyRegisteredCepException;
 import com.service.addressAPI.Domain.Exception.InvalidCepException;
 import com.service.addressAPI.Domain.Exception.SearchedListException;
 import com.service.addressAPI.Domain.Response.ApiResponse;
+import feign.RetryableException;
 import jakarta.servlet.ServletException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.io.IOException;
+import java.util.Map;
 
 @RestControllerAdvice
 @Slf4j
@@ -49,5 +52,19 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse> AlreadyRegisteredCepException(AlreadyRegisteredCepException e) {
         log.error(e.getMessage(), e, e.getClass().getName());
         return ResponseEntity.status(409).body(new ApiResponse(e.getMessage(), e.getClass().getName()) );
+    }
+
+    @ExceptionHandler(RetryableException.class)
+    public ResponseEntity<ApiResponse> AlreadyRegisteredCepException(RetryableException e) {
+        log.error(e.getMessage(), e, e.getClass().getName());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ApiResponse(
+                        "Erro na comunicação com API ViaCep, tente novamente mais tarde!",
+                        Map.of(
+                                "Message", e.getMessage(),
+                                "ErrorClass", e.getClass().getName()
+                        )
+                ));
+
     }
 }
