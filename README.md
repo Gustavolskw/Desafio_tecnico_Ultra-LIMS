@@ -95,6 +95,7 @@ spring.datasource.url=jdbc:mysql://***********:330*/API_CEP ---- endereço do ba
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 spring.datasource.username=***** --- usuario do banco de dados 
 spring.datasource.password=***** --- senha do banco de dados
+api.prefix=/api/v1
 ```
 
 ##Caso utilizar o docker passado
